@@ -1,10 +1,10 @@
 # 🚀 Cloudflare Worker 智能部署中控 (V9.9.6 Pro)
 
-> 全部代码为claude code 完成
+> 全部代码为 Claude Code 完成
 > 自行修改延伸功能
 
 > **版本状态**: V9.9.6 Stable
-> **核心进化**: 引入 **服务器端代码混淆**、**熔断保护机制** 与 **收藏版本管理（此功能没生效）**。
+> **核心进化**: 引入 **服务器端代码混淆**、**熔断保护机制** 与 **收藏版本管理**。
 
 本项目是一个基于 Cloudflare Worker 构建的深度集成化部署管理平台。它不仅能管理多个 Cloudflare 账号，还支持一键批量部署、版本回滚、自动化流量熔断以及代码级的混淆加固，是管理大规模 Worker 节点的终极工具。
 
@@ -22,9 +22,9 @@
 * **实时监控**：自动统计各账号当日总用量。
 * **阈值熔断**：可设置用量百分比（如 90%）。一旦触发，系统自动执行 **UUID 随机轮换** 并 **强制混淆部署**，快速切换节点状态以应对封锁或超额。
 
-### 📜 收藏夹管理(Favorites System)
+### 📜 收藏夹管理 (Favorites System)
 
-* **版本锚定**：支持从 GitHub 历史中挑选稳定版本并加入“收藏”。
+* **版本锚定**：支持从 GitHub 历史中挑选稳定版本并加入"收藏"。
 * **一键回滚**：即使上游代码库更新失败或被删，你依然可以从收藏夹中一键恢复到曾经锁定的稳定状态。
 
 ### 🌐 自动化运维
@@ -34,19 +34,18 @@
 
 ---
 
-
 ## 📖 核心操作说明
 
 ### 🛰️ 账号管理
 
 * **添加账号**：需提供 `Account ID`、`Email` 和 `Global API Key`。
-* **读取域名**：点击“读取”会自动填充该账号下的 Zone，用于后续的批量域名绑定。
+* **读取域名**：点击"读取"会自动填充该账号下的 Zone，用于后续的批量域名绑定。
 
 ### ✨ 批量部署 (Batch Deploy)
 
-1. 点击顶部“批量部署”。
+1. 点击顶部"批量部署"。
 2. **选择模板**：支持 `CMliu` (EdgeTunnel)、`Joey` (相信光) 等主流模板。
-3. **开启混淆**：勾选“启用代码混淆”，系统将通过前端加密后再上传。
+3. **开启混淆**：勾选"启用代码混淆"，系统将通过前端加密后再上传。
 4. **域名绑定**：输入前缀，系统会自动在所选账号的预设域名下生成子域名。
 
 ---
@@ -60,7 +59,7 @@
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)。
 2. 进入 **Workers & Pages** -> **Overview** -> **Create Application** -> **Create Worker**。
 3. 命名为 `manager` (建议)，点击 **Deploy**。
-4. 点击 **Edit code**，将本项目提供的 `worker.js` (V9.9.1) **完整代码** 粘贴覆盖。
+4. 点击 **Edit code**，将本项目提供的 `worker.js` (V9.9.6) **完整代码** 粘贴覆盖。
 5. 点击 **Save and deploy**。
 
 ### 2️⃣ 第二步：绑定 KV 存储 (⚠️ 核心)
@@ -77,14 +76,12 @@
 
 1. 同样在 **Settings** -> **Variables** -> **Environment Variables**。
 2. 点击 **Add variable**：
-* **Variable name**: `ACCESS_CODE`
-* **Value**: 设置你的登录密码（如 `admin888`）。
-
+   * **Variable name**: `ACCESS_CODE`
+   * **Value**: 设置你的登录密码（如 `admin888`）。
 
 3. *(可选但推荐)* 防止 GitHub API 限流：
-* **Variable name**: `GITHUB_TOKEN`
-* **Value**: 你的 GitHub PAT (获取方式见下文)。
-
+   * **Variable name**: `GITHUB_TOKEN`
+   * **Value**: 你的 GitHub PAT (获取方式见下文)。
 
 4. 点击 **Save and deploy**。
 
@@ -102,13 +99,10 @@
 
 * **Account ID**: 登录 CF 后，URL 地址栏 `dash.cloudflare.com/` 后面的那串字符。
 * **Global API Key**:
-1. 点击右上角头像 -> **My Profile** -> **API Tokens**。
-2. 找到 **Global API Key** -> View -> 输入密码复制。
+  1. 点击右上角头像 -> **My Profile** -> **API Tokens**。
+  2. 找到 **Global API Key** -> View -> 输入密码复制。
 
-
-* *注意：必须使用 Global Key，普通 Token 权限不足以创建 KV 和绑定域名。*
-
-
+> *注意：必须使用 Global Key，普通 Token 权限不足以创建 KV 和绑定域名。*
 
 ### 🅱️ GitHub Token (用于解除限流)
 
@@ -127,16 +121,12 @@
 
 1. 点击顶部「**✨ 批量部署**」。
 2. **模板选择**：
-* `CMliu`: 经典 EdgeTunnel，建议开启 KV。
-* `Joey`: 推荐关闭 KV (取消勾选 "绑定 KV 存储")，使用纯变量模式。
-
-
+   * `CMliu`: 经典 EdgeTunnel，建议开启 KV。
+   * `Joey`: 推荐关闭 KV (取消勾选 "绑定 KV 存储")，使用纯变量模式。
 3. **KV 设置**：如果开启 KV，请填写 KV 名称（中控会自动创建）。
 4. **域名设置**：
-* 勾选 `禁用默认域名` 可提高隐蔽性。
-* 填写 `自定义域名` 前缀（前提：账号已读取到预设域名）。
-
-
+   * 勾选 `禁用默认域名` 可提高隐蔽性。
+   * 填写 `自定义域名` 前缀（前提：账号已读取到预设域名）。
 5. 勾选目标账号 -> **🚀 开始部署**。
 
 ### 🔄 变量同步 (反向更新)
